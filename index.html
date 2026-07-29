@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Convertidor de MP3 a texto transcripto</title>
+  <style>
+    body {
+    font-size: 14px;
+    color: #000000;
+    }
+
+    header {
+    font: #ffffff;
+    font-family: "Bebas Neue", sans-serif;
+    background-color: #0000ff;
+    text-align: center;
+    color: white;
+    }
+
+    .header {
+    font: #ffffffS;
+    font-family: "Bebas Neue", sans-serif;
+    background-color: #0000ff;
+    text-align: center;
+    }
+
+    .header h1 {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 32px;
+    color: #ffffff;
+    }
+
+    footer {
+    font: white;
+    font-size: 14px;
+    background-color: #5f9de5;
+    }
+
+    footer h5 {
+    font: white;
+    font-size: 12px;
+    color: #ffffff;
+    }
+
+    footer p {
+    text-align: center;
+    font: white;
+    font-size: 15px;
+    color: white;
+    }
+
+    .footer a {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 12px;
+    color: white;
+    }
+
+    #logo {
+      max-width: 360px;
+      max-height: 120px;
+      margin: 0px auto;
+    }
+
+  </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue">
+</head>
+<body>
+  <header>
+    <h1>Convertidor de MP3 a texto nd uba</h1>
+    <img id="logo" src="logo.png" alt="Logo">
+    <br>
+  </header>
+  <br>
+  <h3>Ingresa tus archivos MP3 a convertir</h3>
+  <p>Deberas subir tu archivo MP3 para poder convertirlo a texto, recuerda que la conversion se lleva en tiempo real, por lo que el convertidor tardara practicamente el mismo tiempo de duracion del audio, por lo que por ejemplo un audio de 2hs tardara aproximadamente 2hs y 1min en transcribirlo. Ademas recuerda que dado que la transcripcion se realiza desde el inicio del audio, cualquier interrupcion (cierre inexperado del navegador) conllevara a que debas iniciar de nuevo desde el principio</p>
+  <br>
+  <input type="file" id="mp3FileInput" accept="audio/mp3">
+  <br>
+  <br>
+  <button onclick="convertir()">Convertir</button>
+  <br>
+  <br>
+  <h2>Texto transcripto:</h2>
+  <div id="transcripto"></div>
+
+  <script>
+    function convertir() {
+      var inputFile = document.getElementById('mp3FileInput').files[0];
+      var audio = new Audio();
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        audio.src = e.target.result;
+        audio.addEventListener('loadedmetadata', function() {
+          var duration = audio.duration;
+          var mediaRecorder = new MediaRecorder(audio.captureStream());
+
+          mediaRecorder.start();
+          audio.play();
+
+          setTimeout(function() {
+            mediaRecorder.stop();
+          }, duration * 1000);
+
+          mediaRecorder.addEventListener('dataavailable', function(e) {
+            var reader = new FileReader();
+            reader.onloadend = function() {
+              var transcripto = document.getElementById('transcripto');
+              transcripto.innerText += reader.result + ' ';
+            };
+            reader.readAsText(e.data);
+          });
+        });
+      };
+
+      reader.readAsDataURL(inputFile);
+    }
+  </script>
+</body>
+
+<footer>
+  <br><br><br><br><br><br><br>
+
+    <p>Transcriptor de Audio a Texto ND UBA ©2019-@2024 todos los derechos reservados - Soporte tecnico Studio El Jampost - Desarrollo Apps  <a href="https://github.com/MauroCVera" style = "color: white">MCV <br><a href="https://github.com/MauroCVera" style = "color: white"><img src="logomcvmini.png" alt="Github MCV" width="70" height="70" /></a></p>
+<br>
+</footer>>
+
+</html>
